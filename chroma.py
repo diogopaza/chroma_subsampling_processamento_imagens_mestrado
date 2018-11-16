@@ -3,16 +3,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 img = cv2.imread("jogador.jpg")
-imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
 
 #converte em YCrCb
 imgYCbCr=cv2.cvtColor( img, cv2.COLOR_BGR2YCR_CB)
 
-B=8
-hh,w=np.array(imgYCbCr.shape[:2])/B * B
 #valor a dividir a crominância
-v=2
-h=2
+v=4
+h=4
 
 cr= imgYCbCr[:,:,1]
 cb= imgYCbCr[:,:,2]
@@ -41,16 +39,19 @@ imagem_final_rgb = cv2.cvtColor( imagemFinal, cv2.COLOR_YCrCb2RGB)
 """
 
 plt.subplot(121)
-plt.imshow(imgYCbCr[:,:,1])
+plt.imshow(imgYCbCr[:,:,2])
 
-plt.title("Imagem Crominancia Cr Original")
+plt.title("Imagem Crominancia Cb Original")
 
 plt.subplot(122)
 plt.imshow(cr_chroma)
-plt.title("Imagem com Chroma Subsampling 4:2:2 canal Cr")
+plt.title("Imagem com Chroma Subsampling 4:1:1 canal Cb")
 
 
 plt.show()
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
 
