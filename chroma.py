@@ -2,37 +2,52 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv2.imread("aviao.jpg")
+img = cv2.imread("jogador.jpg")
+imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 #converte em YCrCb
 imgYCbCr=cv2.cvtColor( img, cv2.COLOR_BGR2YCR_CB)
 
-#cv2.imshow("afs", imgYCbCr[:,:,1])
-nova=np.zeros(imgYCbCr.shape)/2
-print(nova.shape[0]/2)
+B=8
+hh,w=np.array(imgYCbCr.shape[:2])/B * B
+#valor a dividir a crominância
 v=2
 h=2
 
-y=  imgYCbCr[::2,::2,0]
-cr= imgYCbCr[::2,::2,1]
-cb= imgYCbCr[::2,::2,2]
+cr= imgYCbCr[:,:,1]
+cb= imgYCbCr[:,:,2]
 
-#cr=cv2.boxFilter(imgYCbCr[:,:,1],ddepth=-1,ksize=(2,2))
-#cb=cv2.boxFilter(imgYCbCr[:,:,2],ddepth=-1,ksize=(2,2))
-#y=cv2.boxFilter(imgYCbCr[:,:,0],ddepth=-1,ksize=(2,2))
-"""
-Y=y[::v,::h]
-chroma_cr=cr[::v,::h]
-chroma_cb=cb[::v,::h]
-"""
-#nova[0]=y
+cr_chroma=cr[::v,::h]
+cb_chroma=cb[::h,::h]
+print(w)
+#Função nrepeat( imagem, vezes, eixo )
 
-#nova=np.array(imgYCbCr[::2,::2,0] + chroma_cr+chroma_cb)
-#nova=np.zeros(imgYCbCr[:,:,0] + imgYCbCr[:,:,1]+imgYCbCr[:,:,2],dtype=uint8 )
-"""
-cv2.imshow("original", imgYCbCr)
-cv2.imshow("chroma", nova)
-"""
+m=2
+img_aumentada_cr = np.repeat( cr_chroma, m, axis=0)
+img_aumentada_cr = np.repeat(img_aumentada_cr, m, axis=1)
+
+img_aumentada_cb = np.repeat( cb_chroma, m, axis=0)
+img_aumentada_cb = np.repeat( img_aumentada_cb, m, axis=1)
+
+imagemFinal = np.zeros( (img_aumentada_cr.shape[0],img_aumentada_cr.shape[1],3), np.uint8)
+imagemFinal[:,:,0]= imgYCbCr[:,:,0]
+imagemFinal[:,:,1]= img_aumentada_cr
+imagemFinal[:,:,2]= img_aumentada_cb
+
+imagem_final_rgb = cv2.cvtColor( imagemFinal, cv2.COLOR_YCrCb2RGB)
+
+
+plt.subplot(121)
+plt.imshow(imgYCbCr[:,:,1])
+plt.title("Imagem Original")
+
+plt.subplot(122)
+plt.imshow(cr_chroma)
+plt.title("RGB após Chrom Subsampling")
+
+
+plt.show()
+
 
 
 
