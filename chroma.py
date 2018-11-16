@@ -9,14 +9,15 @@ img = cv2.imread("jogador.jpg")
 imgYCbCr=cv2.cvtColor( img, cv2.COLOR_BGR2YCR_CB)
 
 #valor a dividir a crominância
-v=4
-h=4
+v=2
+h=2
 
 cr= imgYCbCr[:,:,1]
 cb= imgYCbCr[:,:,2]
 
 cr_chroma=cr[::v,::h]
 cb_chroma=cb[::v,::h]
+
 
 #Função nrepeat( imagem, vezes, eixo )
 
@@ -44,8 +45,8 @@ plt.imshow(imgYCbCr[:,:,2])
 plt.title("Imagem Crominancia Cb Original")
 
 plt.subplot(122)
-plt.imshow(cr_chroma)
-plt.title("Imagem com Chroma Subsampling 4:1:1 canal Cb")
+plt.imshow(cb_chroma)
+plt.title("Imagem com Chroma Subsampling 4:2:2 canal Cb")
 
 
 plt.show()
